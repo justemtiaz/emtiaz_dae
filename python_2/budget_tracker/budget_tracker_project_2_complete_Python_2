@@ -1,0 +1,93 @@
+
+# Constant Usage
+MAX_BUDGET_ENTRIES = 10
+
+# List to store budget balances
+budget_history = []
+
+# Function to calculate the budget
+def calculate_budget(income, expenses):
+    return income - expenses
+
+
+# Loop to run the budget tracker
+while True:
+
+    # Exception Handling
+    try:
+        # Ask the user for their income and expenses
+        income = float(input("Enter your income: $"))
+        expenses = float(input("Enter your total expenses: $"))
+
+    except ValueError:
+        print("Please enter valid numbers.")
+
+    else:
+        # Calculate the remaining balance
+        balance = calculate_budget(income, expenses)
+
+        # Add balance to the list
+        budget_history.append(balance)
+
+        # Display the budget information
+        print("\n--- Budget Tracker ---")
+        print("Income: $", income)
+        print("Expenses: $", expenses)
+        print("Money left: $", balance)
+
+        # If-Else statement to check the remaining balance
+        if balance < 0:
+            print("You spent more than your income.")
+        elif balance == 0:
+            print("You used all your income.")
+        else:
+            print("You have money left to save!")
+
+        # Check the maximum number of entries
+        if len(budget_history) >= MAX_BUDGET_ENTRIES:
+            print("You reached the maximum number of entries.")
+            break
+
+    finally:
+        print("Budget calculation attempt finished.")
+
+    # Ask the user if they want to continue
+    again = input("\nCalculate another budget? (yes/no): ")
+
+    # Stop the loop if the user enters no
+    if again.lower() == "no":
+        print("Thank you for using Budget Tracker!")
+        break
+
+
+# For loop to display all saved budget balances
+print("\n--- Budget History ---")
+
+for saved_balance in budget_history:
+    print("Money left: $", saved_balance)
+
+
+# File Operations: Write budget history to a file
+try:
+    with open("budget_history.txt", "w") as file:
+        for saved_balance in budget_history:
+            file.write(str(saved_balance) + "\n")
+
+    # Read budget history from the file
+    with open("budget_history.txt", "r") as file:
+        saved_data = file.readlines()
+
+    print("\nBudget history saved successfully.")
+    print("Reading saved budget history:")
+
+    for entry in saved_data:
+        print("Saved balance: $", entry.strip())
+
+except OSError:
+    print("There was a problem saving or reading the file.")
+
+else:
+    print("File operations completed successfully.")
+
+finally:
+    print("Budget Tracker program finished.")
